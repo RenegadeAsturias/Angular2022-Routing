@@ -1,0 +1,59 @@
+
+1º Creación del proyecto
+
+renegade@MiPC:~/proyectos/Angular2022$ ng new empleados
+
+
+2º Instalación de: bootstrap, jquery, popper.js
+
+renegade@MiPC:~/proyectos/Angular2022/empleados$ npm i bootstrap jquery popper.js --save
+
+
+3º Configurar en: /home/renegade/proyectos/Angular2022/empleados/angular.json
+
+"styles": [
+    "src/styles.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+],
+"scripts": [
+    "node_modules/jquery/dist/jquery.slim.min.js",
+    "node_modules/popper.js/dist/umd/popper.min.js",
+    "node_modules/bootstrap/dist/js/bootstrap.min.js"
+]
+
+4º Configuar en: /home/renegade/proyectos/Angular2022/empleados/src/app/app.module.ts
+
+el módulo para utilizar formularios:
+
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule, FormsModule
+
+
+5º Creamos manualmente el fichero: 
+/home/renegade/proyectos/Angular2022/empleados/src/app/empleado.model.ts
+
+para implementar la clase Empleado:
+
+....
+
+
+
+
+Remoto:
+
+renegade@MiPC:~/proyectos/Angular2022/empleados$ git remote add empleados https://github.com/RenegadeAsturias/Angular2022-App-Empleados.git
+
+
+
+
+
+
+
+
+
