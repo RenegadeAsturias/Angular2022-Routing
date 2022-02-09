@@ -1,59 +1,53 @@
 
-1º Creación del proyecto
-
-renegade@MiPC:~/proyectos/Angular2022$ ng new empleados
 
 
-2º Instalación de: bootstrap, jquery, popper.js
+Componentes: Comunicación entre componentes
 
-renegade@MiPC:~/proyectos/Angular2022/empleados$ npm i bootstrap jquery popper.js --save
+@Input() => De padre a hijo
 
-
-3º Configurar en: /home/renegade/proyectos/Angular2022/empleados/angular.json
-
-"styles": [
-    "src/styles.css",
-    "node_modules/bootstrap/dist/css/bootstrap.min.css"
-],
-"scripts": [
-    "node_modules/jquery/dist/jquery.slim.min.js",
-    "node_modules/popper.js/dist/umd/popper.min.js",
-    "node_modules/bootstrap/dist/js/bootstrap.min.js"
-]
-
-4º Configuar en: /home/renegade/proyectos/Angular2022/empleados/src/app/app.module.ts
-
-el módulo para utilizar formularios:
-
-import { FormsModule } from '@angular/forms';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule, FormsModule
+@Output() => De hijo a padre
 
 
-5º Creamos manualmente el fichero: 
-/home/renegade/proyectos/Angular2022/empleados/src/app/empleado.model.ts
+1º Crear componente Hijo para extraer el listado de Empleados
 
-para implementar la clase Empleado:
+comunicacionEntreComponentes$ ng generate component empleadoHijo
 
-....
+comunicacionEntreComponentes$ ng g c empleadoHijo
+
+
+2º Declaración de variables Input()
+
+<app-empleado-hijo *ngFor="let empleado of empleados; let i=index;" [empleado]="empleadoListado" [i]="indice"></app-empleado-hijo>
+
+
+3º Definimos en la clase del Componente Hijo: /src/app/empleado-hijo/empleado-hijo.component.ts
+
+Las variables Input que va a recibir
+
+export class EmpleadoHijoComponent implements OnInit {
+
+  @Input() empleadoLista:Empleado;
+
+  @Input() indice:number;
+  
+
+Nota: Nos dará un problema porque la variable no está declarada.
+Y habíamos exigido que en la definición del proyecto queríamos Sintaxis Estricta.
+
+Vamos al fichero: tsconfig.json y añadimos la propiedad:
+"compilerOptions": {
+    "strictPropertyInitialization": false,
 
 
 
+
+
+
+
+
+****************************************************************************+
 
 Remoto:
 
-renegade@MiPC:~/proyectos/Angular2022/empleados$ git remote add empleados https://github.com/RenegadeAsturias/Angular2022-App-Empleados.git
-
-
-
-
-
-
-
-
+comunicacionEntreComponentes$ git remote add comunicacionEntreComponentes https://github.com/RenegadeAsturias/Angular2022-ComunicacionEntreComponentes.git
 
