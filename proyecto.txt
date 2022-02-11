@@ -51,6 +51,98 @@ En empleado-hijo.component.html tenemos:
     <div class="col-md-3">{{empleadoLista.salario}}</div>
   </div>
 
+// ************************************************************
+// ************************************************************
+// ************************************************************
+
+Vamos a crear un nuevo Componente Hijo, cuyo Padre será el Componente: EmpleadoHijoComponent
+Y desde ese nuevo componente Hijo, pasaremos información al Componente Padre
+utilizando: 
+
+@Output() => De hijo a padre
+
+5º Crear el nuevo componente Características Hijo 
+
+comunicacionEntreComponentes$ ng generate component empleadoHijoCaracteristicas
+
+comunicacionEntreComponentes$ ng g c empleadoHijoCaracteristicas
+
+
+6º De la documentación de Angular copiamos el código:
+
+Importamos Output and EventEmitter en la clase del componente Hijo:
+    
+import { Output, EventEmitter } from '@angular/core';
+
+Y en la Clase del componente Hijo, decoramos una propiedad con @Output    
+
+El siguiente ejemplo newItemEvent @Output() has a type of EventEmitter, which means it's an event.
+
+Ahora modificamos el código por lo que nosotros necesitamos:
+
+
+export class EmpleadoHijoCaracteristicasComponent implements OnInit {
+
+  @Output() caracteristicaHijoEvent = new EventEmitter<string>();
+
+  addCaracteristicaHijo(value: any) {
+    this.caracteristicaHijoEvent.emit(value);
+  }
+
+
+
+7º De la documentación de Angular copiamos el código, para configurar el template del hijo:
+Y lo adaptamos a lo que necesitamos:
+
+<label>Característica: </label>
+<input type="text" #nuevaCaracteristica>
+<button type="button" (click)="addCaracteristicaHijo(nuevaCaracteristica.value)" class="btn btn-primary">Añadir característica</button>
+
+
+
+8º De la documentación de Angular copiamos el código, para configurar el componente padre:
+Y lo adaptamos a lo que necesitamos:
+
+export class EmpleadoHijoComponent implements OnInit {
+
+  arrayCaracteristicas = [''];
+
+  agregarCaracteristica(nuevaCaracteristica: any) {
+
+    this.arrayCaracteristicas.push(nuevaCaracteristica);
+  }
+ 
+
+
+8º De la documentación de Angular copiamos el código, para configurar el template del padre:
+Y lo adaptamos a lo que necesitamos:
+
+<app-empleado-hijo-caracteristicas (caracteristicaHijoEvent)="agregarCaracteristica($event)"></app-empleado-hijo-caracteristicas>
+
+<ul style="list-style: none;">
+  <li *ngFor="let caracteristica of arrayCaracteristicas">{{caracteristica}}</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
