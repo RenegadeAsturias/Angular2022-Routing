@@ -1,6 +1,14 @@
+import { Injectable } from "@angular/core";
 import { Empleado } from "./empleado.model";
+import { ServicioEmpleadosService } from "./servicio-empleados.service";
 
+
+@Injectable()
 export class EmpleadosService {
+
+    constructor(private servicioVentanaEmergente:ServicioEmpleadosService){
+
+    }
 
     empleados:Empleado[] = [
         new Empleado("Juan","Díaz","Presidente",7500),
@@ -10,6 +18,7 @@ export class EmpleadosService {
       ];
     
     agregarEmpleadoServicio(empleado:Empleado) {
+        this.servicioVentanaEmergente.muestraMensaje("Empleado añadido, nombre:"+empleado.nombre);
         this.empleados.push(empleado);
     }
 

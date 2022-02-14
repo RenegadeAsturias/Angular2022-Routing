@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Empleado } from './empleado.model';
 import { EmpleadosService } from './empleados.service';
-import { ServicioEmpleadosService } from './servicio-empleados.service';
+// import { ServicioEmpleadosService } from './servicio-empleados.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,9 @@ export class AppComponent implements OnInit {
 
   titulo = 'Listado de Empleados';
 
-  constructor(private miServicio:ServicioEmpleadosService,
-              private miServicioEmpleados:EmpleadosService) {
+  // constructor(private miServicio:ServicioEmpleadosService, private miServicioEmpleados:EmpleadosService) {
+  constructor(private miServicioEmpleados:EmpleadosService) {
+
   }
 
   ngOnInit(): void {
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit {
   agregarEmpleado(){
     let miEmpleado=new Empleado(this.cuadroNombre, this.cuadroApellido, this.cuadroCargo, this.cuadroSalario);
     this.miServicioEmpleados.agregarEmpleadoServicio(miEmpleado);
-    this.miServicio.muestraMensaje("Empleado añadido:"+miEmpleado.nombre);
+    // this.miServicio.muestraMensaje("Empleado añadido:"+miEmpleado.nombre);
   }
 
   cuadroNombre:string="";

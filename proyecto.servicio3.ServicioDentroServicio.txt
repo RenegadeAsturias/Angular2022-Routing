@@ -1,0 +1,182 @@
+
+
+1º Queremos que desde uno de los dos servicios que tenemos se pueda llamar a otro:
+
+-Primer servicio: muestra un alert cuando se inserta un nuevo empleado
+y cuando se inserta una nueva característica
+
+-Segundo servicio: creamos un Service Data 
+que contuviese la información del array de datos de los empleados
+para poder inyectarlo en diferentes componentes si fuese necesario.
+
+Y creamos también un método nuevo en el servicio que permitía agregar un empleado.
+
+
+2º El cambio que vamos a hacer es el siguiente,
+en el segundo servicio cuando vayamos a agregar un empleado llamaremos al servicio
+que muestra el alert con la información del empleado insertado.
+
+Y obviamente borraremos la llamada anterior al primer servicio
+cuando se inserta un nuevo empleado.
+
+
+3º Borramos la llamada anterior al primer servicio
+cuando se inserta un nuevo empleado en 'app.component.ts'
+
+borramos el import del servicio, la inyección del servicio y la llamada al servicio
+
+
+// import { ServicioEmpleadosService } from './servicio-empleados.service';
+
+export class AppComponent implements OnInit {
+
+  titulo = 'Listado de Empleados';
+
+  // constructor(private miServicio:ServicioEmpleadosService, private miServicioEmpleados:EmpleadosService) {
+  constructor(private miServicioEmpleados:EmpleadosService) {
+  
+  }
+
+  agregarEmpleado(){
+    let miEmpleado=new Empleado(this.cuadroNombre, this.cuadroApellido, this.cuadroCargo, this.cuadroSalario);
+    this.miServicioEmpleados.agregarEmpleadoServicio(miEmpleado);
+    // this.miServicio.muestraMensaje("Empleado añadido:"+miEmpleado.nombre);
+  }
+
+// ------------------------------------------------------------------------
+
+
+4º En el servicio: empleados.service.ts
+indicamos que es un servicio inyectable, es decir, que se le podrán inyectar servicios
+con la anotación @Injectable():
+
+import { Injectable } from "@angular/core";
+
+@Injectable()
+export class EmpleadosService {
+
+Y ahora le añadimos un constructor y la inyección del otro servicio:
+
+constructor(private servicioVentanaEmergente:ServicioEmpleadosService){
+}
+
+Y ahora hacemos la llamada al método del servicio:
+
+agregarEmpleadoServicio(empleado:Empleado) {
+  this.servicioVentanaEmergente.muestraMensaje("Empleado añadido, nombre:"+empleado.nombre);
+  ... ... ... ... ...
+}
+
+
+
+
+
+
+
+cambiar la fuente del array de empleados por un 'dataService'
+que contenga la información de los empleados
+de tal forma que esa información pudiese ser compartida entre componentes.
+
+
+2º Como en el ejemplo anterior creamos utilizando angular CLI para generar el servicio
+para este ejemplo crearemos manualmente el servicio:
+
+Así que creamos un fichero: 
+empleados.service.ts
+
+
+3º Lo primero es escribir en ese fichero: 'empleados.service.ts' la clase:
+
+export class EmpleadosService {
+}
+
+
+4º Y ahora buscamos el array de empleados: 'empleados:Empleado[]=[...' que teníamos en: 'app.component.ts' 
+que se correspondería con los datos de la información.
+Y lo añadimos a la nueva clase del servicio: 'EmpleadosService'
+
+export class EmpleadosService {
+
+   empleados:Empleado[] = [
+        new Empleado("Juan","Díaz","Presidente",7500),
+        new Empleado("Ana","Martín","Directora",5500),
+        new Empleado("María","Fernandez","Jefa sección",4500),
+        new Empleado("Laura","López","Administrativo",3500),
+      ];
+
+}
+
+5º Añadimos también el código correspondiente a añadir un empleado a la clase del servicio:
+
+this.empleados.push(miEmpleado);
+
+se quedaría así:
+
+agregarEmpleadoServicio(empleado:Empleado) {
+    this.empleados.push(empleado);
+}
+
+6º Ahora reemplazamos el código anterior en: 'app.component.ts'
+y lo primero es inyectar el nuevo servicio manual en el constructor
+y luego reemplazar la llamada:
+
+constructor(private miServicio:ServicioEmpleadosService,
+            private miServicioEmpleados:EmpleadosService) {
+}
+
+agregarEmpleado(){
+    let miEmpleado=new Empleado(this.cuadroNombre, this.cuadroApellido, this.cuadroCargo, this.cuadroSalario);
+    this.miServicioEmpleados.agregarEmpleadoServicio(miEmpleado);
+    this.miServicio.muestraMensaje("Empleado añadido:"+miEmpleado.nombre);
+}
+
+
+7º Nos muestra un error:
+
+Error: src/app/app.component.html:37:44 - error TS2339: Property 'empleados' does not exist on type 'AppComponent'.
+37 <app-empleado-hijo *ngFor="let empleado of empleados; let i=index;" [empleadoLista]="empleado" [indice]="i"></app-empleado-hijo>
+
+  src/app/app.component.ts:7:16
+    7   templateUrl: './app.component.html',
+                     ~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AppComponent.
+
+
+
+el problema es que necesitamos que la clase hijo tenga declarado el array de datos de empleados
+para arreglarlo, vamos a incluir en la clase: 'app.component.ts'  
+el siguiente código con la definición del Array de empleados vacío:
+
+export class AppComponent {
+  empleados:Empleado[]=[];
+
+
+Y ahora hay que rellenar la información del Array con la información del dataService
+de los empleados, de tal forma que una vez inyectado el objeto establecemos su valor al array vacío de empleados:
+
+  constructor(private miServicio:ServicioEmpleadosService,
+              private miServicioEmpleados:EmpleadosService) {
+
+    this.empleados = this.miServicioEmpleados.empleados;
+  }
+
+
+8º En una apliación Angular el primer método que se ejecuta de una clase es: constructor(){}
+
+Y el segundo es: ngOnInit()
+
+para implementarlo lo primero es hacer que la clase Implemente el método onInit()
+
+export class AppComponent implements OnInit {
+
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
+
+Y ahora movemos la inicialización del array de empleados a este método y todo seguirá funcionando como antes
+
+  ngOnInit(): void {
+    this.empleados = this.miServicioEmpleados.empleados;
+  }
+
+
