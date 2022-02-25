@@ -8,7 +8,11 @@
     <div class="col-md-3">Salario</div>
   </div>
   <div class="row">
-    <div class="col-md-3">[{{indice+1}}] {{empleadoLista.nombre}}</div>
+    <div class="col-md-3">
+      [{{indice+1}}] {{empleadoLista.nombre}}
+      &nbsp;&nbsp;<a [routerLink]="['/actualiza',indice]" [queryParams]="{accion:'1'}">Actualiza</a>
+      &nbsp;&nbsp;<a [routerLink]="['/actualiza',indice]" [queryParams]="{accion:'2'}">Elimina</a>
+    </div>
     <div class="col-md-3">{{empleadoLista.apellido}}</div>
     <div class="col-md-3">{{empleadoLista.cargo}}</div>
     <div class="col-md-3">{{empleadoLista.salario}}</div>

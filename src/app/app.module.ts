@@ -12,12 +12,16 @@ import { ProyectosComponentComponent } from './proyectos-component/proyectos-com
 import { QuienesComponentComponent } from './quienes-component/quienes-component.component';
 import { ContactoComponentComponent } from './contacto-component/contacto-component.component';
 import { RouterModule, Routes } from '@angular/router';
+import { ActualizaEmpleadoComponent } from './actualiza-empleado/actualiza-empleado.component';
+import { ErrorPersonalizadoComponent } from './error-personalizado/error-personalizado.component';
 
 const appRoutes:Routes=[
 	{path:'', component:HomeComponentComponent},
 	{path:'proyectos', component:ProyectosComponentComponent},
 	{path:'quienes', component:QuienesComponentComponent},
-	{path:'contacto', component:ContactoComponentComponent}
+	{path:'contacto', component:ContactoComponentComponent},
+  {path:'actualiza/:id', component:ActualizaEmpleadoComponent},
+  {path:'**', component:ErrorPersonalizadoComponent}  
 ];
 
 @NgModule({
@@ -28,7 +32,8 @@ const appRoutes:Routes=[
     HomeComponentComponent,
     ProyectosComponentComponent,
     QuienesComponentComponent,
-    ContactoComponentComponent
+    ContactoComponentComponent,
+    ActualizaEmpleadoComponent
   ],
   imports: [
     BrowserModule, 
